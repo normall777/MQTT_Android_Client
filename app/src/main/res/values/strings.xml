@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">MQTT Android Client</string>
-    <string name="title_home">Home</string>
+    <string name="title_connect">Параметры соединения</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="mqtt_server_address">Адрес MQTT-сервера</string>
+    <string name="default_ip_add">127.0.0.1</string>
+    <string name="default_mqtt_port">1883</string>
+    <string name="btn_text_connect">Подключиться</string>
+    <string name="btn_text_send_test_test">Отправить test/test</string>
 </resources>
