@@ -13,8 +13,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+
+import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends AppCompatActivity {
     //Файл настроек
@@ -28,8 +33,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences mSettings;
     private Button buttonConnect;
     private Button buttonSendTest;
-    private MqttAndroidClient clientMqtt;
-
+    private MqttAndroidClient mqttMyClient = null;
 
     //Внутрненние параметры
     private String ipAdd;
@@ -74,13 +78,24 @@ public class MainActivity extends AppCompatActivity {
         buttonSendTest = (Button) findViewById(R.id.buttonSendTest);
 
         //Инициализация переменных
-        ipAdd = editTextIpAdd.getText().toString();
-        mqttPort = editTextPortMQTT.getText().toString();
-        
+
+
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ipAdd = editTextIpAdd.getText().toString();
+                mqttPort = editTextPortMQTT.getText().toString();
+                if (mqttMyClient == null){
+                    connect();
+                    buttonConnect.setText(getText(R.string.btn_text_disconnect));
+                    buttonSendTest.setVisibility(View.VISIBLE);
+
+                } else if (mqttMyClient.isConnected()){
+                    disconnect();
+                    buttonConnect.setText(getText(R.string.btn_text_connect));
+                    buttonSendTest.setVisibility(View.INVISIBLE);
+                }
 
             }
         });
@@ -89,10 +104,70 @@ public class MainActivity extends AppCompatActivity {
         buttonSendTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String topic = "test";
+                String payload = "test";
+                byte[] encodedPayload = new byte[0];
+                try{
+                    encodedPayload = payload.getBytes("UTF-8");
+                    MqttMessage message = new MqttMessage(encodedPayload);
+                    mqttMyClient.publish(topic,message);
+                }catch (UnsupportedEncodingException | MqttException e){
+                    e.printStackTrace();
+                }
+
+
 
             }
         });
     }
+
+    private void connect() {
+        final String clientId = MqttClient.generateClientId();
+        String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
+        mqttMyClient = new MqttAndroidClient(this.getApplicationContext(),
+                serverURL, clientId);
+
+        try {
+            IMqttToken token = mqttMyClient.connect();
+            token.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Toast.makeText(getApplicationContext(),"Ура, работает\n"+clientId, Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Toast.makeText(getApplicationContext(),"Блин, не работает", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (MqttException e){
+            e.printStackTrace();
+        }
+    }
+
+    private void disconnect() {
+        try{
+            IMqttToken disconToken = mqttMyClient.disconnect();
+            disconToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Toast.makeText(getApplicationContext(),"Ок, отсоединились", Toast.LENGTH_SHORT).show();
+                    mqttMyClient = null;
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Toast.makeText(getApplicationContext(),"Хм, что-то не так", Toast.LENGTH_SHORT).show();
+                    mqttMyClient = null;
+                }
+            });
+        } catch (MqttException e){
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     public static byte[] hexStringToByteArray(String s) {
         byte[] b = new byte[s.length() / 2];

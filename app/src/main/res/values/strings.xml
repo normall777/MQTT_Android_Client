@@ -8,4 +8,5 @@
     <string name="default_mqtt_port">1883</string>
     <string name="btn_text_connect">Подключиться</string>
     <string name="btn_text_send_test_test">Отправить test/test</string>
+    <string name="btn_text_disconnect">Разорвать соединение</string>
 </resources>

@@ -60,7 +60,8 @@
             android:id="@+id/buttonSendTest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btn_text_send_test_test" />
+            android:text="@string/btn_text_send_test_test"
+            android:visibility="invisible" />
 
 
     </LinearLayout>
