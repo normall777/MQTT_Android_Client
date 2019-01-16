@@ -10,6 +10,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="vertical"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="8dp">
@@ -30,20 +31,20 @@
                 android:id="@+id/editTextIpAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:autofillHints=""
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/default_ip_add"
-                android:autofillHints="" />
+                android:text="@string/default_ip_add" />
 
             <EditText
                 android:id="@+id/editTextPortMQTT"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:autofillHints=""
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="@string/default_mqtt_port"
-                android:autofillHints="" />
+                android:text="@string/default_mqtt_port" />
         </LinearLayout>
 
         <Button

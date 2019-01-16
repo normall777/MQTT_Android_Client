@@ -1,26 +1,17 @@
 package com.normall.mqttandroidclient;
 
 import android.app.Fragment;
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.transition.FragmentTransitionSupport;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.android.service.MqttService;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
@@ -47,12 +38,12 @@ public class MainActivity extends FragmentActivity {
                     fragmTrans.replace(R.id.fragment_on_activity, setingsFrag);
                     fragmTrans.commit();
                     return true;
-                case R.id.navigation_dashboard:
+                case R.id.navigation_control:
+
+                    return true;
+                case R.id.navigation_console:
                     fragmTrans.replace(R.id.fragment_on_activity, consoleMqttFragment);
                     fragmTrans.commit();
-                    return true;
-                case R.id.navigation_notifications:
-
                     return true;
             }
             return false;
@@ -80,10 +71,14 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startService(new Intent(this, MqttService.class));
         setContentView(R.layout.activity_main);
-        fragmTrans = getSupportFragmentManager().beginTransaction();
-        fragmTrans.add(R.id.fragment_on_activity, setingsFrag);
-        fragmTrans.commit();
+        if (savedInstanceState == null){
+            fragmTrans = getSupportFragmentManager().beginTransaction();
+            fragmTrans.replace(R.id.fragment_on_activity, setingsFrag);
+            fragmTrans.commit();
+        }
+
 
         //Меню
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

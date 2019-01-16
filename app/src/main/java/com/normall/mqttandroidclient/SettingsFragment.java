@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,7 +42,7 @@ public class SettingsFragment extends Fragment {
 
     public MainActivity mainActivity;
     public MqttAndroidClient mqttMyClient = null;
-
+    IMqttToken tokenForMessages;
 
 
     @Override
@@ -63,7 +64,6 @@ public class SettingsFragment extends Fragment {
             buttonConnect.setText(getText(R.string.btn_text_disconnect));
             buttonSendTest.setVisibility(View.VISIBLE);
         }
-
 
 
         mSettings = getContext().getApplicationContext().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
@@ -99,6 +99,31 @@ public class SettingsFragment extends Fragment {
     }
 
 
+
+
+
+    private void subscribe(){
+        String topic = "test";
+        try {
+            if (!mqttMyClient.isConnected()) return;
+            IMqttToken subToken = mqttMyClient.subscribe(topic,0);
+            subToken.setActionCallback(new IMqttActionListener() {
+                @Override
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    Toast.makeText(getActivity().getApplicationContext(),"Ставьте лайки, подписывайтесь на наш канал!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    Toast.makeText(getActivity().getApplicationContext(),"Проблемы с подпиской", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void connect() {
         final String clientId = MqttClient.generateClientId();
         String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
@@ -113,6 +138,7 @@ public class SettingsFragment extends Fragment {
                     Toast.makeText(getActivity().getApplicationContext(),"Ура, работает\n"+clientId, Toast.LENGTH_LONG).show();
                     mainActivity.mqttMyClient = mqttMyClient;
                     mainActivity.sendMQTTMessage("test","Hello, I am "+clientId);
+                    subscribe();
                 }
 
                 @Override
@@ -127,8 +153,6 @@ public class SettingsFragment extends Fragment {
             e.printStackTrace();
         }
     }
-
-
 
     private void disconnect() {
         try{
@@ -153,6 +177,7 @@ public class SettingsFragment extends Fragment {
         }
 
     }
+
 
 
 

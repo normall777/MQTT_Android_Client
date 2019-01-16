@@ -5,10 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".ConsoleMqttFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/lv_console"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
-
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false" />
 </FrameLayout>
