@@ -1,6 +1,8 @@
 package com.normall.mqttandroidclient;
 
+import android.app.Service;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -40,7 +42,7 @@ public class SettingsFragment extends Fragment {
     private Button buttonSendTest;
 
 
-    public MqttAndroidClient mqttMyClient = null;
+
 
 
 
@@ -55,14 +57,17 @@ public class SettingsFragment extends Fragment {
         buttonSendTest = (Button) v.findViewById(R.id.buttonSendTest);
 
         mSettings = getContext().getApplicationContext().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-
         buttonConnect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ipAdd = editTextIpAdd.getText().toString();
                 mqttPort = editTextPortMQTT.getText().toString();
-                if (mqttMyClient == null){
-                    connect();
+                getActivity().startService(new Intent(getActivity(), MQTTService.class)
+                        .putExtra("ipAdd",ipAdd)
+                        .putExtra("mqttPort",mqttPort));
+                /*if (mqttMyClient == null){
+
+                    connect(); //При подключении отправляется сообщение в чат
                     buttonConnect.setText(getText(R.string.btn_text_disconnect));
                     buttonSendTest.setVisibility(View.VISIBLE);
 
@@ -70,7 +75,7 @@ public class SettingsFragment extends Fragment {
                     disconnect();
                     buttonConnect.setText(getText(R.string.btn_text_connect));
                     buttonSendTest.setVisibility(View.INVISIBLE);
-                }
+                }*/
 
             }
         });
@@ -78,7 +83,7 @@ public class SettingsFragment extends Fragment {
         buttonSendTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String topic = "test";
+                /*String topic = "test";
                 String payload = "test";
                 byte[] encodedPayload = new byte[0];
                 try{
@@ -87,7 +92,7 @@ public class SettingsFragment extends Fragment {
                     mqttMyClient.publish(topic,message);
                 }catch (UnsupportedEncodingException | MqttException e){
                     e.printStackTrace();
-                }
+                }*/
 
 
 
@@ -99,51 +104,9 @@ public class SettingsFragment extends Fragment {
     }
 
 
-    private void connect() {
-        final String clientId = MqttClient.generateClientId();
-        String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
-        mqttMyClient = new MqttAndroidClient(this.getActivity().getApplicationContext(),
-                serverURL, clientId);
 
-        try {
-            IMqttToken token = mqttMyClient.connect();
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(getActivity().getApplicationContext(),"Ура, работает\n"+clientId, Toast.LENGTH_LONG).show();
-                }
 
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(getActivity().getApplicationContext(),"Блин, не работает", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (MqttException e){
-            e.printStackTrace();
-        }
-    }
 
-    private void disconnect() {
-        try{
-            IMqttToken disconToken = mqttMyClient.disconnect();
-            disconToken.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    Toast.makeText(getActivity().getApplicationContext(),"Ок, отсоединились", Toast.LENGTH_SHORT).show();
-                    mqttMyClient = null;
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(getActivity().getApplicationContext(),"Хм, что-то не так", Toast.LENGTH_SHORT).show();
-                    mqttMyClient = null;
-                }
-            });
-        } catch (MqttException e){
-            e.printStackTrace();
-        }
-
-    }
 
 
 
