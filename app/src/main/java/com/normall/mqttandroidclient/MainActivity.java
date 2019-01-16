@@ -27,7 +27,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends FragmentActivity {
-
+    public static MqttAndroidClient mqttMyClient = null;
 
     //Работа с фрагментами
     private Fragment activityFragment = getFragmentManager().findFragmentById(R.id.fragment_on_activity);
@@ -43,6 +43,7 @@ public class MainActivity extends FragmentActivity {
             fragmTrans = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.navigation_connect:
+                    Bundle bundle = new Bundle();
                     fragmTrans.replace(R.id.fragment_on_activity, setingsFrag);
                     fragmTrans.commit();
                     return true;
@@ -58,10 +59,31 @@ public class MainActivity extends FragmentActivity {
         }
     };
 
+
+    public void sendMQTTMessage(String topic, String message) {
+        if (mqttMyClient==null){
+            Toast.makeText(getApplicationContext(),"Блин, не работает", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        byte[] encodedPayload = new byte[0];
+        try{
+            encodedPayload = message.getBytes("UTF-8");
+            MqttMessage mqttMessage = new MqttMessage(encodedPayload);
+            mqttMyClient.publish(topic,mqttMessage);
+        }catch (UnsupportedEncodingException | MqttException e){
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        fragmTrans = getSupportFragmentManager().beginTransaction();
+        fragmTrans.add(R.id.fragment_on_activity, setingsFrag);
+        fragmTrans.commit();
 
         //Меню
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);

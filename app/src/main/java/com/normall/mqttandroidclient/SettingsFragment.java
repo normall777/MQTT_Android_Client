@@ -39,7 +39,7 @@ public class SettingsFragment extends Fragment {
     private Button buttonConnect;
     private Button buttonSendTest;
 
-
+    public MainActivity mainActivity;
     public MqttAndroidClient mqttMyClient = null;
 
 
@@ -53,6 +53,18 @@ public class SettingsFragment extends Fragment {
         editTextPortMQTT = (EditText) v.findViewById(R.id.editTextPortMQTT);
         buttonConnect = (Button) v.findViewById(R.id.buttonConnect);
         buttonSendTest = (Button) v.findViewById(R.id.buttonSendTest);
+        mainActivity = (MainActivity) getActivity();
+        mqttMyClient = mainActivity.mqttMyClient;
+
+        if (mqttMyClient == null){
+            buttonConnect.setText(getText(R.string.btn_text_connect));
+            buttonSendTest.setVisibility(View.INVISIBLE);
+        } else if (mqttMyClient.isConnected()){
+            buttonConnect.setText(getText(R.string.btn_text_disconnect));
+            buttonSendTest.setVisibility(View.VISIBLE);
+        }
+
+
 
         mSettings = getContext().getApplicationContext().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
@@ -78,19 +90,7 @@ public class SettingsFragment extends Fragment {
         buttonSendTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String topic = "test";
-                String payload = "test";
-                byte[] encodedPayload = new byte[0];
-                try{
-                    encodedPayload = payload.getBytes("UTF-8");
-                    MqttMessage message = new MqttMessage(encodedPayload);
-                    mqttMyClient.publish(topic,message);
-                }catch (UnsupportedEncodingException | MqttException e){
-                    e.printStackTrace();
-                }
-
-
-
+                mainActivity.sendMQTTMessage("test","test");
             }
         });
 
@@ -111,17 +111,24 @@ public class SettingsFragment extends Fragment {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Toast.makeText(getActivity().getApplicationContext(),"Ура, работает\n"+clientId, Toast.LENGTH_LONG).show();
+                    mainActivity.mqttMyClient = mqttMyClient;
+                    mainActivity.sendMQTTMessage("test","Hello, I am "+clientId);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(getActivity().getApplicationContext(),"Блин, не работает", Toast.LENGTH_SHORT).show();
+                    mqttMyClient = null;
+                    mainActivity.mqttMyClient = null;
+
                 }
             });
         } catch (MqttException e){
             e.printStackTrace();
         }
     }
+
+
 
     private void disconnect() {
         try{
@@ -131,12 +138,14 @@ public class SettingsFragment extends Fragment {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Toast.makeText(getActivity().getApplicationContext(),"Ок, отсоединились", Toast.LENGTH_SHORT).show();
                     mqttMyClient = null;
+                    mainActivity.mqttMyClient = null;
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(getActivity().getApplicationContext(),"Хм, что-то не так", Toast.LENGTH_SHORT).show();
                     mqttMyClient = null;
+                    mainActivity.mqttMyClient = null;
                 }
             });
         } catch (MqttException e){
