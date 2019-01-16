@@ -46,7 +46,7 @@ public class MqttConnection {
     }
 
 
-    public static boolean connect(String ipAdd, String mqttPort, final Context context) {
+    public static boolean connect(String ipAdd, String mqttPort, final Context context, final SettingsFragment fragment) {
         final String clientId = MqttClient.generateClientId();
         String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
         MqttConnection.setClient(new MqttAndroidClient(context, //this.getActivity().getApplicationContext()
@@ -58,13 +58,16 @@ public class MqttConnection {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
+                    Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     MqttConnection.subscribe();
+                    fragment.ChangeVisualInterface();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(context,"Блин, не работает", Toast.LENGTH_SHORT).show();
                     MqttConnection.setClient(null);
+                    fragment.ChangeVisualInterface();
                 }
             });
             return true;

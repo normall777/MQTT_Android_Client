@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,13 +47,8 @@ public class SettingsFragment extends Fragment {
         buttonSendTest = (Button) v.findViewById(R.id.buttonSendTest);
         mainActivity = (MainActivity) getActivity();
 
-        if (MqttConnection.getClient() == null){
-            buttonConnect.setText(getText(R.string.btn_text_connect));
-            buttonSendTest.setVisibility(View.INVISIBLE);
-        } else if (MqttConnection.getClient().isConnected()){
-            buttonConnect.setText(getText(R.string.btn_text_disconnect));
-            buttonSendTest.setVisibility(View.VISIBLE);
-        }
+        ChangeVisualInterface();
+        final SettingsFragment fragment = this;
 
         mSettings = getContext().getApplicationContext().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
 
@@ -62,11 +58,13 @@ public class SettingsFragment extends Fragment {
                 ipAdd = editTextIpAdd.getText().toString();
                 mqttPort = editTextPortMQTT.getText().toString();
                 if (MqttConnection.getClient() == null){
-                    MqttConnection.connect(ipAdd, mqttPort, getActivity().getApplicationContext());
+                    boolean status = MqttConnection.connect(ipAdd, mqttPort, getActivity().getApplicationContext(), fragment);
                     MqttConnection.getClient().setCallback(new MqttCallback() {
                         @Override
                         public void connectionLost(Throwable cause) {
                             Toast.makeText(getActivity().getApplicationContext(),"Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
+                            MqttConnection.setClient(null);
+                            ChangeVisualInterface();
                         }
 
                         @Override
@@ -79,13 +77,9 @@ public class SettingsFragment extends Fragment {
                             Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
                         }
                     });
-                    buttonConnect.setText(getText(R.string.btn_text_disconnect));
-                    buttonSendTest.setVisibility(View.VISIBLE);
 
                 } else if (MqttConnection.getClient().isConnected()){
                     MqttConnection.disconnect();
-                    buttonConnect.setText(getText(R.string.btn_text_connect));
-                    buttonSendTest.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -99,6 +93,15 @@ public class SettingsFragment extends Fragment {
         return v;
     }
 
+    public void ChangeVisualInterface() {
+        if (MqttConnection.getClient() == null){
+            buttonConnect.setText(getText(R.string.btn_text_connect));
+            buttonSendTest.setVisibility(View.INVISIBLE);
+        } else if (MqttConnection.getClient().isConnected()){
+            buttonConnect.setText(getText(R.string.btn_text_disconnect));
+            buttonSendTest.setVisibility(View.VISIBLE);
+        }
+    }
 
 
     @Override

@@ -47,7 +47,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        startService(new Intent(this, MqttService.class));
+        //startService(new Intent(this, MqttService.class));
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null){
             fragmTrans = getSupportFragmentManager().beginTransaction();
