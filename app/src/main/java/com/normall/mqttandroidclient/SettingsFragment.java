@@ -41,7 +41,7 @@ public class SettingsFragment extends Fragment {
     private Button buttonSendTest;
 
     public MainActivity mainActivity;
-    public MqttAndroidClient mqttMyClient = null;
+    //public MqttAndroidClient mqttMyClient = null;
     IMqttToken tokenForMessages;
 
 
@@ -55,12 +55,11 @@ public class SettingsFragment extends Fragment {
         buttonConnect = (Button) v.findViewById(R.id.buttonConnect);
         buttonSendTest = (Button) v.findViewById(R.id.buttonSendTest);
         mainActivity = (MainActivity) getActivity();
-        mqttMyClient = mainActivity.mqttMyClient;
 
-        if (mqttMyClient == null){
+        if (MqttConnection.getClient() == null){
             buttonConnect.setText(getText(R.string.btn_text_connect));
             buttonSendTest.setVisibility(View.INVISIBLE);
-        } else if (mqttMyClient.isConnected()){
+        } else if (MqttConnection.getClient().isConnected()){
             buttonConnect.setText(getText(R.string.btn_text_disconnect));
             buttonSendTest.setVisibility(View.VISIBLE);
         }
@@ -73,12 +72,12 @@ public class SettingsFragment extends Fragment {
             public void onClick(View v) {
                 ipAdd = editTextIpAdd.getText().toString();
                 mqttPort = editTextPortMQTT.getText().toString();
-                if (mqttMyClient == null){
+                if (MqttConnection.getClient() == null){
                     connect();
                     buttonConnect.setText(getText(R.string.btn_text_disconnect));
                     buttonSendTest.setVisibility(View.VISIBLE);
 
-                } else if (mqttMyClient.isConnected()){
+                } else if (MqttConnection.getClient().isConnected()){
                     disconnect();
                     buttonConnect.setText(getText(R.string.btn_text_connect));
                     buttonSendTest.setVisibility(View.INVISIBLE);
@@ -97,16 +96,12 @@ public class SettingsFragment extends Fragment {
 
         return v;
     }
-
-
-
-
-
+    
     private void subscribe(){
         String topic = "test";
         try {
-            if (!mqttMyClient.isConnected()) return;
-            IMqttToken subToken = mqttMyClient.subscribe(topic,0);
+            if (!MqttConnection.getClient().isConnected()) return;
+            IMqttToken subToken = MqttConnection.getClient().subscribe(topic,0);
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -127,16 +122,15 @@ public class SettingsFragment extends Fragment {
     private void connect() {
         final String clientId = MqttClient.generateClientId();
         String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
-        mqttMyClient = new MqttAndroidClient(this.getActivity().getApplicationContext(),
-                serverURL, clientId);
+        MqttConnection.setClient(new MqttAndroidClient(this.getActivity().getApplicationContext(),
+                serverURL, clientId));
 
         try {
-            IMqttToken token = mqttMyClient.connect();
+            IMqttToken token = MqttConnection.getClient().connect();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Toast.makeText(getActivity().getApplicationContext(),"Ура, работает\n"+clientId, Toast.LENGTH_LONG).show();
-                    mainActivity.mqttMyClient = mqttMyClient;
                     mainActivity.sendMQTTMessage("test","Hello, I am "+clientId);
                     subscribe();
                 }
@@ -144,9 +138,7 @@ public class SettingsFragment extends Fragment {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(getActivity().getApplicationContext(),"Блин, не работает", Toast.LENGTH_SHORT).show();
-                    mqttMyClient = null;
-                    mainActivity.mqttMyClient = null;
-
+                    MqttConnection.setClient(null);
                 }
             });
         } catch (MqttException e){
@@ -156,20 +148,18 @@ public class SettingsFragment extends Fragment {
 
     private void disconnect() {
         try{
-            IMqttToken disconToken = mqttMyClient.disconnect();
+            IMqttToken disconToken = MqttConnection.getClient().disconnect();
             disconToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Toast.makeText(getActivity().getApplicationContext(),"Ок, отсоединились", Toast.LENGTH_SHORT).show();
-                    mqttMyClient = null;
-                    mainActivity.mqttMyClient = null;
+                    MqttConnection.setClient(null);
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(getActivity().getApplicationContext(),"Хм, что-то не так", Toast.LENGTH_SHORT).show();
-                    mqttMyClient = null;
-                    mainActivity.mqttMyClient = null;
+                    MqttConnection.setClient(null);
                 }
             });
         } catch (MqttException e){

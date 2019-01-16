@@ -18,7 +18,6 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import java.io.UnsupportedEncodingException;
 
 public class MainActivity extends FragmentActivity {
-    public static MqttAndroidClient mqttMyClient = null;
 
     //Работа с фрагментами
     private Fragment activityFragment = getFragmentManager().findFragmentById(R.id.fragment_on_activity);
@@ -52,7 +51,7 @@ public class MainActivity extends FragmentActivity {
 
 
     public void sendMQTTMessage(String topic, String message) {
-        if (mqttMyClient==null){
+        if (MqttConnection.getClient()==null){
             Toast.makeText(getApplicationContext(),"Блин, не работает", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -61,7 +60,7 @@ public class MainActivity extends FragmentActivity {
         try{
             encodedPayload = message.getBytes("UTF-8");
             MqttMessage mqttMessage = new MqttMessage(encodedPayload);
-            mqttMyClient.publish(topic,mqttMessage);
+            MqttConnection.getClient().publish(topic,mqttMessage);
         }catch (UnsupportedEncodingException | MqttException e){
             e.printStackTrace();
         }
@@ -84,8 +83,5 @@ public class MainActivity extends FragmentActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
-
-
-
 
 }

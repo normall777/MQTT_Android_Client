@@ -24,7 +24,7 @@ public class ConsoleMqttFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_console_mqtt, null);
-        mqttMyClient = MainActivity.mqttMyClient;
+        mqttMyClient = MqttConnection.getClient();
         String[] catNamesArray = new String[] { "Рыжик", "Барсик", "Мурзик",
                 "Мурка", "Васька", "Томасина", "Бобик", "Кристина", "Пушок",
                 "Дымка", "Кузя", "Китти", "Барбос", "Масяня", "Симба" };
