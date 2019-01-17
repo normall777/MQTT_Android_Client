@@ -4,19 +4,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
+import android.widget.Switch;
 
 
 public class SettingsFragment extends Fragment {
@@ -24,10 +17,12 @@ public class SettingsFragment extends Fragment {
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_IP_ADD = "ip_add";
     public static final String APP_PREFERENCES_PORT_MQTT = "mqtt_port";
+    public static final String APP_PREFERENCES_MODE = "mode";
 
     //Внутрненние параметры
     private String ipAdd;
     private String mqttPort;
+    private boolean workMode;
 
     //Инициализация элементов формы для доступа
     private EditText editTextIpAdd;
@@ -35,8 +30,7 @@ public class SettingsFragment extends Fragment {
     private SharedPreferences mSettings;
     private Button buttonConnect;
     private Button buttonSendTest;
-
-    public MainActivity mainActivity;
+    private Switch switchWorkMode;
 
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container,
@@ -47,10 +41,9 @@ public class SettingsFragment extends Fragment {
         editTextPortMQTT = (EditText) v.findViewById(R.id.editTextPortMQTT);
         buttonConnect = (Button) v.findViewById(R.id.buttonConnect);
         buttonSendTest = (Button) v.findViewById(R.id.buttonSendTest);
-        mainActivity = (MainActivity) getActivity();
+        switchWorkMode = (Switch) v.findViewById(R.id.switch_work_mode);
 
         ChangeVisualInterface();
-        final SettingsFragment fragment = this;
 
         mSettings = getContext().getApplicationContext().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         buttonConnect.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +65,19 @@ public class SettingsFragment extends Fragment {
                 MqttConnection.sendMQTTMessage("test","test");
             }
         });
+
+        switchWorkMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (switchWorkMode.isChecked()) {
+                    workMode = true;
+                }else {
+                    workMode = false;
+                }
+            }
+        });
+
+
         return v;
     }
 
@@ -81,11 +87,14 @@ public class SettingsFragment extends Fragment {
             buttonSendTest.setVisibility(View.INVISIBLE);
             editTextIpAdd.setEnabled(true);
             editTextPortMQTT.setEnabled(true);
+            switchWorkMode.setEnabled(true);
+
         } else if (MqttConnection.getClient().isConnected()){
             buttonConnect.setText(getText(R.string.btn_text_disconnect));
             buttonSendTest.setVisibility(View.VISIBLE);
             editTextIpAdd.setEnabled(false);
             editTextPortMQTT.setEnabled(false);
+            switchWorkMode.setEnabled(false);
         }
     }
 
@@ -98,6 +107,7 @@ public class SettingsFragment extends Fragment {
         SharedPreferences.Editor editor = mSettings.edit();
         editor.putString(APP_PREFERENCES_IP_ADD, ipAdd);
         editor.putString(APP_PREFERENCES_PORT_MQTT, mqttPort);
+        editor.putBoolean(APP_PREFERENCES_MODE, workMode);
         editor.apply();
     }
 
@@ -108,6 +118,11 @@ public class SettingsFragment extends Fragment {
         if (mSettings.contains(APP_PREFERENCES_IP_ADD)){
             ipAdd = mSettings.getString(APP_PREFERENCES_IP_ADD, getString(R.string.default_ip_add));
             editTextIpAdd.setText(ipAdd);
+        }
+
+        if(mSettings.contains(APP_PREFERENCES_MODE)){
+            workMode = mSettings.getBoolean(APP_PREFERENCES_MODE,false);
+            switchWorkMode.setChecked(workMode);
         }
 
         if (mSettings.contains(APP_PREFERENCES_PORT_MQTT)) {

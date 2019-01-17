@@ -73,7 +73,6 @@ public class MqttConnection {
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     MqttConnection.subscribe();
                     activity.setingsFrag.ChangeVisualInterface();
-
                     MqttConnection.getClient().setCallback(new MqttCallback() {
                         @Override
                         public void connectionLost(Throwable cause) {
@@ -119,7 +118,7 @@ public class MqttConnection {
 
 
     public static boolean subscribe(){
-        String topic = "test";
+        String topic = "#";
         try {
             if (!MqttConnection.getClient().isConnected()) return false;
             IMqttToken subToken = MqttConnection.getClient().subscribe(topic,0);

@@ -47,6 +47,12 @@
                 android:text="@string/default_mqtt_port" />
         </LinearLayout>
 
+        <Switch
+            android:id="@+id/switch_work_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/switch_text_work_mode" />
+
         <Button
             android:id="@+id/buttonConnect"
             android:layout_width="match_parent"

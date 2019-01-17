@@ -64,15 +64,18 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void Connect(String ipAdd, String mqttPort){
-        MqttConnection.connect(ipAdd, mqttPort, getApplicationContext(), this);
+        if (MqttConnection.getClient()==null){
+            MqttConnection.connect(ipAdd, mqttPort, getApplicationContext(), this);
+        }
     }
+
     public void Disconnect(){
         if (MqttConnection.isConnected()){
             MqttConnection.disconnect(this);
         }
 
     }
-    
+
     @Override
     protected void onDestroy() {
         if (MqttConnection.isConnected()){
