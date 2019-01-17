@@ -19,12 +19,8 @@ import java.security.Policy;
 public class ControlFragment extends Fragment {
 
     private Button buttonLightOn;
-    private boolean isFlashOn=false;
-    private Camera camera;
-    private boolean hasFlash;
-    Camera.Parameters params;
-
-
+    private boolean lightOn;
+    private String lightMessage = "lightOn";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -33,72 +29,30 @@ public class ControlFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_control, null);
         buttonLightOn = (Button) v.findViewById(R.id.button_light);
 
-        hasFlash = getActivity().getApplicationContext()
-                .getPackageManager()
-                .hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-
-        if (!hasFlash){
-            Toast.makeText(getActivity().getApplicationContext(),"Фонарика нет :с", Toast.LENGTH_SHORT).show();
-        }
-
-        getCamera();
-
 
         buttonLightOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isFlashOn) {
-                    //Выключаем фонарик:
-                    turnOffFlash();
-                } else {
-                    //Включаем фонарик:
-                    turnOnFlash();
-                }
+                MqttConnection.sendMQTTMessage("phones/slave/execute", lightMessage);
+                //MqttConnection.sendMQTTMessage("control","lightOn");
             }
         });
         return v;
     }
 
-    private void getCamera(){
-        if (camera == null){
-            try {
-                camera = android.hardware.Camera.open();
-                params = camera.getParameters();
-            } catch (RuntimeException e){
-                Log.e("Ошибка", e.getMessage());
-            }
+    public void SetButtonLightOn(boolean sost){
+        lightOn = sost;
+
+        if (lightOn){
+            buttonLightOn.setText(R.string.btn_text_off_light);
+            lightMessage = "lightOff";
         }
-    }
 
-    private void turnOnFlash() {
-        if (!isFlashOn) {
-            if (camera == null || params == null) {
-                return;
-            }
-            params = camera.getParameters();
-            params.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);
-            camera.setParameters(params);
-            camera.startPreview();
-            isFlashOn = true;
+        else {
+            buttonLightOn.setText(R.string.btn_text_on_light);
+            lightMessage = "lightOn";
         }
+
     }
-
-    private void turnOffFlash() {
-        if (isFlashOn) {
-            if (camera == null || params == null) {
-                return;
-            }
-            params = camera.getParameters();
-            params.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
-            camera.setParameters(params);
-            camera.stopPreview();
-            isFlashOn = false;
-        }
-    }
-
-
-
-
-
 
 }

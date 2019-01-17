@@ -131,4 +131,7 @@ public class SettingsFragment extends Fragment {
         }
     }
 
+    public boolean getWorkMode() {
+        return workMode;
+    }
 }

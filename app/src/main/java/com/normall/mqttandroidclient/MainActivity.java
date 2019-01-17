@@ -8,8 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
-import org.eclipse.paho.client.mqttv3.MqttException;
-
 public class MainActivity extends FragmentActivity {
 
     //Работа с фрагментами
@@ -45,6 +43,9 @@ public class MainActivity extends FragmentActivity {
     };
 
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +60,41 @@ public class MainActivity extends FragmentActivity {
         //Меню
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        //Фонарик
+        Torch.Initialize(this);
     }
+
+
+    public void readMessage(String topic, String message){
+        if (setingsFrag.getWorkMode()){
+            if (topic.equals("phones/slave/execute")){
+                switch (message){
+                    case "lightOn":
+                        Torch.turnOnFlash();
+                        MqttConnection.sendMQTTMessage("phones/slave/result","LIGHT_ON_OK");
+                        return;
+                    case "lightOff":
+                        Torch.turnOffFlash();
+                        MqttConnection.sendMQTTMessage("phones/slave/result","LIGHT_OFF_OK");
+                        return;
+                }
+            }
+        } else {
+            if (topic.equals("phones/slave/result")) {
+                switch (message) {
+                    case "LIGHT_ON_OK":
+                        controlFragment.SetButtonLightOn(true);
+                        return;
+                    case "LIGHT_OFF_OK":
+                        controlFragment.SetButtonLightOn(false);
+                        return;
+                }
+            }
+        }
+    }
+
+
 
     public void Connect(String ipAdd, String mqttPort){
         if (MqttConnection.getClient()==null){

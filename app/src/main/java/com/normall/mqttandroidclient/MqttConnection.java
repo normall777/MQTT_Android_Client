@@ -81,9 +81,7 @@ public class MqttConnection {
                             MqttConnection.setClient(null);
                             Toast.makeText(context.getApplicationContext(), "Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
                             Log.i("MyApp", "Это мое сообщение о заходе в connectionLost");
-                            //ChangeVisualInterface();
-                            //MessagesArray.setAdapter(null);
-                            //MessagesArray.setMessages(null);
+                            activity.setingsFrag.ChangeVisualInterface();
                         }
 
                         @Override
@@ -93,11 +91,12 @@ public class MqttConnection {
                             MessagesArray.addMessage(topic + ": " + mes);
                             MessagesArray.getAdapter().notifyDataSetChanged();
                             Toast.makeText(context.getApplicationContext(), mes, Toast.LENGTH_LONG).show();
+                            activity.readMessage(topic,mes);
                         }
 
                         @Override
                         public void deliveryComplete(IMqttDeliveryToken token) {
-                            //Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
+
                         }
                     });
 
