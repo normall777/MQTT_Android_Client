@@ -1,7 +1,6 @@
 package com.normall.mqttandroidclient;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -9,9 +8,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
-import org.eclipse.paho.android.service.MqttService;
-import org.eclipse.paho.client.mqttv3.IMqttActionListener;
-import org.eclipse.paho.client.mqttv3.IMqttToken;
 import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class MainActivity extends FragmentActivity {
@@ -21,6 +17,7 @@ public class MainActivity extends FragmentActivity {
     private FragmentTransaction fragmTrans;
     public SettingsFragment setingsFrag = new SettingsFragment();
     public ConsoleMqttFragment consoleMqttFragment = new ConsoleMqttFragment();
+    public ControlFragment controlFragment = new ControlFragment();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -35,7 +32,8 @@ public class MainActivity extends FragmentActivity {
                     fragmTrans.commit();
                     return true;
                 case R.id.navigation_control:
-
+                    fragmTrans.replace(R.id.fragment_on_activity, controlFragment);
+                    fragmTrans.commit();
                     return true;
                 case R.id.navigation_console:
                     fragmTrans.replace(R.id.fragment_on_activity, consoleMqttFragment);
@@ -76,7 +74,7 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    @Override
+    /*@Override
     protected void onDestroy() {
         if (MqttConnection.isConnected()){
             try {
@@ -87,5 +85,5 @@ public class MainActivity extends FragmentActivity {
         }
         super.onDestroy();
 
-    }
+    }*/
 }
