@@ -1,6 +1,8 @@
 package com.normall.mqttandroidclient;
 
 import android.content.Context;
+import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -11,6 +13,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 public class MqttConnection {
     private static MqttAndroidClient client;
@@ -29,6 +32,7 @@ public class MqttConnection {
             disconToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    Log.i("MyApp", "Это мое сообщение о заходе в disconnect");
                     MqttConnection.setClient(null);
                 }
 
@@ -51,15 +55,16 @@ public class MqttConnection {
         String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
         MqttConnection.setClient(new MqttAndroidClient(context, //this.getActivity().getApplicationContext()
                 serverURL, clientId));
-
         try {
             IMqttToken token = MqttConnection.getClient().connect();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
+                    MessagesArray.setMessages(new ArrayList<String>());
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     MqttConnection.subscribe();
+                    MessagesArray.setAdapter(new ArrayAdapter<String>(fragment.getActivity(), android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
                     fragment.ChangeVisualInterface();
                 }
 

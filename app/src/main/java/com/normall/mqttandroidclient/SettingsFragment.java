@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 
@@ -51,42 +53,44 @@ public class SettingsFragment extends Fragment {
         final SettingsFragment fragment = this;
 
         mSettings = getContext().getApplicationContext().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+            buttonConnect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ipAdd = editTextIpAdd.getText().toString();
+                    mqttPort = editTextPortMQTT.getText().toString();
+                    if (MqttConnection.getClient() == null) {
+                        boolean status = MqttConnection.connect(ipAdd, mqttPort, getActivity().getApplicationContext(), fragment);
+                        MqttConnection.getClient().setCallback(new MqttCallback() {
+                            @Override
+                            public void connectionLost(Throwable cause) {
+                                MqttConnection.setClient(null);
+                                //Toast.makeText(getActivity().getApplicationContext(), "Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
+                                Log.i("MyApp", "Это мое сообщение о заходе в connectionLost");
+                                //ChangeVisualInterface();
+                                //MessagesArray.setAdapter(null);
+                                //MessagesArray.setMessages(null);
+                            }
 
-        buttonConnect.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ipAdd = editTextIpAdd.getText().toString();
-                mqttPort = editTextPortMQTT.getText().toString();
-                if (MqttConnection.getClient() == null){
-                    boolean status = MqttConnection.connect(ipAdd, mqttPort, getActivity().getApplicationContext(), fragment);
-                    MqttConnection.getClient().setCallback(new MqttCallback() {
-                        @Override
-                        public void connectionLost(Throwable cause) {
-                            Toast.makeText(getActivity().getApplicationContext(),"Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
-                            MqttConnection.setClient(null);
-                            ChangeVisualInterface();
-                        }
+                            @Override
+                            public void messageArrived(String topic, MqttMessage message) throws Exception {
+                                byte[] encodedPayload = message.getPayload();
+                                String mes = new String(encodedPayload);
+                                MessagesArray.addMessage(topic + ": " + mes);
+                                MessagesArray.getAdapter().notifyDataSetChanged();
+                                Toast.makeText(getActivity().getApplicationContext(), mes, Toast.LENGTH_LONG).show();
+                            }
 
-                        @Override
-                        public void messageArrived(String topic, MqttMessage message) throws Exception {
-                            byte[] encodedPayload = message.getPayload();
-                            String mes = new String(encodedPayload);
-                            MessagesArray.addMessage(topic+": "+mes);
-                            MessagesArray.getAdapter().notifyDataSetChanged();
-                            Toast.makeText(getActivity().getApplicationContext(),mes, Toast.LENGTH_LONG).show();
-                        }
+                            @Override
+                            public void deliveryComplete(IMqttDeliveryToken token) {
+                                //Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
+                            }
+                        });
 
-                        @Override
-                        public void deliveryComplete(IMqttDeliveryToken token) {
-                            //Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
-                        }
-                    });
-
-                } else if (MqttConnection.getClient().isConnected()){
-                    MqttConnection.disconnect();
+                    } else if (MqttConnection.getClient().isConnected()) {
+                        MqttConnection.disconnect();
+                    }
                 }
-            }
-        });
+            });
 
         buttonSendTest.setOnClickListener(new View.OnClickListener() {
             @Override
