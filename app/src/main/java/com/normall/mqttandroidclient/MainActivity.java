@@ -1,6 +1,7 @@
 package com.normall.mqttandroidclient;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -12,10 +13,11 @@ public class MainActivity extends FragmentActivity {
 
     //Работа с фрагментами
     private Fragment activityFragment = getFragmentManager().findFragmentById(R.id.fragment_on_activity);
-    private FragmentTransaction fragmTrans;
-    public SettingsFragment setingsFrag = new SettingsFragment();
+    public FragmentTransaction fragmTrans;
+    public SettingsFragment setingsFragment = new SettingsFragment();
     public ConsoleMqttFragment consoleMqttFragment = new ConsoleMqttFragment();
     public ControlFragment controlFragment = new ControlFragment();
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -26,7 +28,7 @@ public class MainActivity extends FragmentActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_connect:
                     Bundle bundle = new Bundle();
-                    fragmTrans.replace(R.id.fragment_on_activity, setingsFrag);
+                    fragmTrans.replace(R.id.fragment_on_activity, setingsFragment);
                     fragmTrans.commit();
                     return true;
                 case R.id.navigation_control:
@@ -43,7 +45,11 @@ public class MainActivity extends FragmentActivity {
     };
 
 
-
+    public void ChangeVisualInterface(){//Для корректной перерисовки фрагмента, если он сейчас показан на экране
+        if (setingsFragment.isVisible()){
+            setingsFragment.ChangeVisualInterface();
+        }
+    }
 
 
     @Override
@@ -53,7 +59,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null){
             fragmTrans = getSupportFragmentManager().beginTransaction();
-            fragmTrans.replace(R.id.fragment_on_activity, setingsFrag);
+            fragmTrans.replace(R.id.fragment_on_activity, setingsFragment);
             fragmTrans.commit();
         }
 
@@ -67,7 +73,7 @@ public class MainActivity extends FragmentActivity {
 
 
     public void readMessage(String topic, String message){
-        if (setingsFrag.getWorkMode()){
+        if (setingsFragment.getWorkMode()){
             if (topic.equals("phones/slave/execute")){
                 switch (message){
                     case "lightOn":

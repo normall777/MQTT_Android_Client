@@ -1,6 +1,5 @@
 package com.normall.mqttandroidclient;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -42,7 +41,7 @@ public class MqttConnection {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("MyApp", "Это мое сообщение о заходе в disconnect");
                     MqttConnection.setClient(null);
-                    activity.setingsFrag.ChangeVisualInterface();
+                    activity.setingsFragment.ChangeVisualInterface();
                 }
 
                 @Override
@@ -74,14 +73,14 @@ public class MqttConnection {
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     MqttConnection.subscribe();
-                    activity.setingsFrag.ChangeVisualInterface();
+                    activity.setingsFragment.ChangeVisualInterface();
                     MqttConnection.getClient().setCallback(new MqttCallback() {
                         @Override
                         public void connectionLost(Throwable cause) {
                             MqttConnection.setClient(null);
                             Toast.makeText(context.getApplicationContext(), "Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
                             Log.i("MyApp", "Это мое сообщение о заходе в connectionLost");
-                            activity.setingsFrag.ChangeVisualInterface();
+                            activity.ChangeVisualInterface();
                         }
 
                         @Override
@@ -105,9 +104,9 @@ public class MqttConnection {
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    Toast.makeText(context,"Блин, не работает", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"Подключение выполнить не удалось", Toast.LENGTH_SHORT).show();
                     MqttConnection.setClient(null);
-                    activity.setingsFrag.ChangeVisualInterface();
+                    activity.setingsFragment.ChangeVisualInterface();
                 }
             });
             return true;

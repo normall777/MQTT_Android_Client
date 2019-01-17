@@ -14,8 +14,6 @@ public class ConsoleMqttFragment extends Fragment {
 
     public ListView listViewConsole;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -25,12 +23,6 @@ public class ConsoleMqttFragment extends Fragment {
         listViewConsole = (ListView) v.findViewById(R.id.lv_console);
         listViewConsole.setAdapter(MessagesArray.getAdapter());
         Log.i("MyApp", "onCreateView");
-
-
         return v;
     }
-
-
-
-
 }

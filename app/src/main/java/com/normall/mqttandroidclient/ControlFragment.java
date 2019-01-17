@@ -29,7 +29,6 @@ public class ControlFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_control, null);
         buttonLightOn = (Button) v.findViewById(R.id.button_light);
 
-
         buttonLightOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
