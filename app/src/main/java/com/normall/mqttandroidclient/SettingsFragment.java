@@ -59,9 +59,9 @@ public class SettingsFragment extends Fragment {
                 ipAdd = editTextIpAdd.getText().toString();
                 mqttPort = editTextPortMQTT.getText().toString();
                 if (MqttConnection.getClient() == null) {
-                    boolean status = MqttConnection.connect(ipAdd, mqttPort, getActivity().getApplicationContext(), fragment);
+                    ((MainActivity) getActivity()).Connect(ipAdd, mqttPort);
                 } else if (MqttConnection.getClient().isConnected()) {
-                    MqttConnection.disconnect();
+                    ((MainActivity) getActivity()).Disconnect();
                 }
             }
         });
@@ -79,9 +79,13 @@ public class SettingsFragment extends Fragment {
         if (MqttConnection.getClient() == null){
             buttonConnect.setText(getText(R.string.btn_text_connect));
             buttonSendTest.setVisibility(View.INVISIBLE);
+            editTextIpAdd.setEnabled(true);
+            editTextPortMQTT.setEnabled(true);
         } else if (MqttConnection.getClient().isConnected()){
             buttonConnect.setText(getText(R.string.btn_text_disconnect));
             buttonSendTest.setVisibility(View.VISIBLE);
+            editTextIpAdd.setEnabled(false);
+            editTextPortMQTT.setEnabled(false);
         }
     }
 

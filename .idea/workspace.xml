@@ -29,7 +29,6 @@
       <change beforePath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.6/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/ConsoleMqttFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/ConsoleMqttFragment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MqttConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MqttConnection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/SettingsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/SettingsFragment.java" afterDir="false" />
@@ -175,20 +174,20 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="4482" />
+          <entry key="java" value="4938" />
           <entry key="xml" value="207" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4482" />
+          <entry key="JAVA" value="4938" />
           <entry key="XML" value="207" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="gradle" value="1" />
-          <entry key="java" value="22" />
+          <entry key="java" value="23" />
           <entry key="png" value="1" />
           <entry key="xml" value="26" />
         </counts>
@@ -197,7 +196,7 @@
         <counts>
           <entry key="Groovy" value="1" />
           <entry key="Image" value="1" />
-          <entry key="JAVA" value="22" />
+          <entry key="JAVA" value="23" />
           <entry key="XML" value="26" />
         </counts>
       </usages-collector>
@@ -208,23 +207,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/ConsoleMqttFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="23" column="58" selection-start-line="23" selection-start-column="58" selection-end-line="23" selection-end-column="58" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MqttConnection.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="68" column="32" selection-start-line="68" selection-start-column="32" selection-end-line="68" selection-end-column="32" />
+            <state relative-caret-position="196">
+              <caret line="29" column="74" selection-start-line="29" selection-start-column="74" selection-end-line="29" selection-end-column="74" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -235,8 +222,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="194">
-              <caret line="57" selection-start-line="57" selection-end-line="57" />
+            <state relative-caret-position="284">
+              <caret line="91" column="26" selection-start-line="91" selection-start-column="26" selection-end-line="91" selection-end-column="26" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -244,11 +231,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/SettingsFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
+            <state relative-caret-position="310">
+              <caret line="82" column="44" selection-start-line="82" selection-start-column="44" selection-end-line="82" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2091#4246#0" expanded="true" />
@@ -257,33 +244,6 @@
                 <element signature="e#4602#4603#0" expanded="true" />
                 <element signature="e#4057#4091#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/support-fragment/27.1.1/94732bda44fba11302c58e459b7c1f47e7521bf9/support-fragment-27.1.1-sources.jar!/android/support/v4/app/Fragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="613" selection-start-line="613" selection-end-line="613" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-27/android/widget/ArrayAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-3">
-              <caret line="311" column="7" selection-start-line="311" selection-start-column="7" selection-end-line="311" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-27/android/view/View.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="127">
-              <caret line="24959" column="13" selection-start-line="24959" selection-start-column="13" selection-end-line="24959" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -2601,10 +2561,10 @@
         <option value="$PROJECT_DIR$/app/src/main/res/layout/fragment_settings.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MessagesArrive.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MessagesArray.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/SettingsFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/ConsoleMqttFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MqttConnection.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MainActivity.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/ConsoleMqttFragment.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/SettingsFragment.java" />
       </list>
     </option>
   </component>
@@ -2861,7 +2821,7 @@
     <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49811321" visible="true" weight="0.19664429" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49811321" visible="true" weight="0.19664429" />
       <window_info id="Structure" order="1" sideWeight="0.5018868" side_tool="true" weight="0.21409395" />
       <window_info id="Designer" order="2" />
       <window_info id="Build Variants" order="3" sideWeight="0.5018868" side_tool="true" weight="0.21409395" />
@@ -2876,10 +2836,10 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49932885" weight="0.32867134" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.56107384" weight="0.25454545" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.55973154" weight="0.25454545" />
       <window_info anchor="bottom" id="Android Profiler" order="8" sideWeight="0.49932885" weight="0.32867134" />
-      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.2771812" side_tool="true" visible="true" weight="0.33286715" />
-      <window_info anchor="bottom" id="Logcat" order="10" sideWeight="0.7228188" visible="true" weight="0.33286715" />
+      <window_info anchor="bottom" id="Event Log" order="9" sideWeight="0.2785235" side_tool="true" visible="true" weight="0.33286715" />
+      <window_info active="true" anchor="bottom" id="Logcat" order="10" sideWeight="0.7214765" visible="true" weight="0.33286715" />
       <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.4986577" weight="0.053146854" />
       <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.4986577" weight="0.32867134" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
@@ -3059,6 +3019,13 @@
         </state>
       </provider>
     </entry>
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/support-fragment/27.1.1/94732bda44fba11302c58e459b7c1f47e7521bf9/support-fragment-27.1.1-sources.jar!/android/support/v4/app/Fragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="613" selection-start-line="613" selection-end-line="613" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Android/Sdk/sources/android-27/android/widget/ArrayAdapter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-3">
@@ -3073,17 +3040,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/support-fragment/27.1.1/94732bda44fba11302c58e459b7c1f47e7521bf9/support-fragment-27.1.1-sources.jar!/android/support/v4/app/Fragment.java">
+    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.eclipse.paho/org.eclipse.paho.android.service/1.0.2/d1de776645c8f9ae04eaf0c9d46b8ced9d39387e/org.eclipse.paho.android.service-1.0.2-sources.jar!/org/eclipse/paho/android/service/MqttAndroidClient.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="127">
-          <caret line="613" selection-start-line="613" selection-end-line="613" />
+        <state relative-caret-position="-4083">
+          <caret line="69" column="13" selection-start-line="69" selection-start-column="13" selection-end-line="69" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MqttConnection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="382">
+          <caret line="30" column="40" selection-start-line="30" selection-start-column="40" selection-end-line="30" selection-end-column="40" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#794#795#0" expanded="true" />
+            <element signature="e#823#824#0" expanded="true" />
+            <element signature="e#885#886#0" expanded="true" />
+            <element signature="e#931#932#0" expanded="true" />
+            <element signature="e#1018#1019#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/ConsoleMqttFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="29" column="74" selection-start-line="29" selection-start-column="74" selection-end-line="29" selection-end-column="74" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="194">
-          <caret line="57" selection-start-line="57" selection-end-line="57" />
+        <state relative-caret-position="284">
+          <caret line="91" column="26" selection-start-line="91" selection-start-column="26" selection-end-line="91" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -3092,8 +3084,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/SettingsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="77" column="16" selection-start-line="77" selection-start-column="16" selection-end-line="77" selection-end-column="16" />
+        <state relative-caret-position="310">
+          <caret line="82" column="44" selection-start-line="82" selection-start-column="44" selection-end-line="82" selection-end-column="44" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2091#4246#0" expanded="true" />
@@ -3101,26 +3093,6 @@
             <element signature="e#4424#4603#0" expanded="true" />
             <element signature="e#4602#4603#0" expanded="true" />
             <element signature="e#4057#4091#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/MqttConnection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="68" column="32" selection-start-line="68" selection-start-column="32" selection-end-line="68" selection-end-column="32" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/normall/mqttandroidclient/ConsoleMqttFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="23" column="58" selection-start-line="23" selection-start-column="58" selection-end-line="23" selection-end-column="58" />
-          <folding>
-            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

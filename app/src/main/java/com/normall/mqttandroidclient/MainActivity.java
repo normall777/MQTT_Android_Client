@@ -10,14 +10,17 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 
 import org.eclipse.paho.android.service.MqttService;
+import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttException;
 
 public class MainActivity extends FragmentActivity {
 
     //Работа с фрагментами
     private Fragment activityFragment = getFragmentManager().findFragmentById(R.id.fragment_on_activity);
     private FragmentTransaction fragmTrans;
-    private SettingsFragment setingsFrag = new SettingsFragment();
-    private ConsoleMqttFragment consoleMqttFragment = new ConsoleMqttFragment();
+    public SettingsFragment setingsFrag = new SettingsFragment();
+    public ConsoleMqttFragment consoleMqttFragment = new ConsoleMqttFragment();
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -60,10 +63,26 @@ public class MainActivity extends FragmentActivity {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+    public void Connect(String ipAdd, String mqttPort){
+        MqttConnection.connect(ipAdd, mqttPort, getApplicationContext(), this);
+    }
+    public void Disconnect(){
+        if (MqttConnection.isConnected()){
+            MqttConnection.disconnect(this);
+        }
 
+    }
+    
     @Override
     protected void onDestroy() {
+        if (MqttConnection.isConnected()){
+            try {
+                MqttConnection.getClient().disconnect();
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
         super.onDestroy();
-        MqttConnection.disconnect();
+
     }
 }

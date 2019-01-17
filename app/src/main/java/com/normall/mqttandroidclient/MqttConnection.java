@@ -1,8 +1,8 @@
 package com.normall.mqttandroidclient;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -28,7 +28,12 @@ public class MqttConnection {
         MqttConnection.client = client;
     }
 
-    public static boolean disconnect() {
+    public static boolean isConnected(){
+        return getClient().isConnected();
+    }
+
+
+    public static boolean disconnect(final MainActivity activity) {
         try{
             IMqttToken disconToken = MqttConnection.getClient().disconnect();
             disconToken.setActionCallback(new IMqttActionListener() {
@@ -36,6 +41,7 @@ public class MqttConnection {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("MyApp", "Это мое сообщение о заходе в disconnect");
                     MqttConnection.setClient(null);
+                    activity.setingsFrag.ChangeVisualInterface();
                 }
 
                 @Override
@@ -52,7 +58,7 @@ public class MqttConnection {
     }
 
 
-    public static boolean connect(String ipAdd, String mqttPort, final Context context, final SettingsFragment fragment) {
+    public static boolean connect(String ipAdd, String mqttPort, final Context context, final MainActivity activity) {
         final String clientId = MqttClient.generateClientId();
         String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
         MqttConnection.setClient(new MqttAndroidClient(context, //this.getActivity().getApplicationContext()
@@ -66,7 +72,7 @@ public class MqttConnection {
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     MqttConnection.subscribe();
-                    fragment.ChangeVisualInterface();
+                    activity.setingsFrag.ChangeVisualInterface();
 
                     MqttConnection.getClient().setCallback(new MqttCallback() {
                         @Override
@@ -101,7 +107,7 @@ public class MqttConnection {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(context,"Блин, не работает", Toast.LENGTH_SHORT).show();
                     MqttConnection.setClient(null);
-                    fragment.ChangeVisualInterface();
+                    activity.setingsFrag.ChangeVisualInterface();
                 }
             });
             return true;
