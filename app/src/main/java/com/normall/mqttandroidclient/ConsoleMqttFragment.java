@@ -21,6 +21,7 @@ public class ConsoleMqttFragment extends Fragment {
 
     public ListView listViewConsole;
     private void ReloadList(){
+        MessagesArray.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
         listViewConsole.setAdapter(MessagesArray.getAdapter());
     }
 

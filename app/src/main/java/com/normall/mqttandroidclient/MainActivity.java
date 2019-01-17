@@ -55,10 +55,15 @@ public class MainActivity extends FragmentActivity {
             fragmTrans.commit();
         }
 
-
         //Меню
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MqttConnection.disconnect();
+    }
 }

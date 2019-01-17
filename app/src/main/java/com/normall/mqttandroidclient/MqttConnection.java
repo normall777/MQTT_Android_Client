@@ -7,7 +7,9 @@ import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -64,8 +66,35 @@ public class MqttConnection {
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     MqttConnection.subscribe();
-                    MessagesArray.setAdapter(new ArrayAdapter<String>(fragment.getActivity(), android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
                     fragment.ChangeVisualInterface();
+
+                    MqttConnection.getClient().setCallback(new MqttCallback() {
+                        @Override
+                        public void connectionLost(Throwable cause) {
+                            MqttConnection.setClient(null);
+                            Toast.makeText(context.getApplicationContext(), "Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
+                            Log.i("MyApp", "Это мое сообщение о заходе в connectionLost");
+                            //ChangeVisualInterface();
+                            //MessagesArray.setAdapter(null);
+                            //MessagesArray.setMessages(null);
+                        }
+
+                        @Override
+                        public void messageArrived(String topic, MqttMessage message) throws Exception {
+                            byte[] encodedPayload = message.getPayload();
+                            String mes = new String(encodedPayload);
+                            MessagesArray.addMessage(topic + ": " + mes);
+                            MessagesArray.getAdapter().notifyDataSetChanged();
+                            Toast.makeText(context.getApplicationContext(), mes, Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void deliveryComplete(IMqttDeliveryToken token) {
+                            //Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
                 }
 
                 @Override

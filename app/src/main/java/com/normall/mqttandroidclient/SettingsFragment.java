@@ -53,44 +53,18 @@ public class SettingsFragment extends Fragment {
         final SettingsFragment fragment = this;
 
         mSettings = getContext().getApplicationContext().getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-            buttonConnect.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    ipAdd = editTextIpAdd.getText().toString();
-                    mqttPort = editTextPortMQTT.getText().toString();
-                    if (MqttConnection.getClient() == null) {
-                        boolean status = MqttConnection.connect(ipAdd, mqttPort, getActivity().getApplicationContext(), fragment);
-                        MqttConnection.getClient().setCallback(new MqttCallback() {
-                            @Override
-                            public void connectionLost(Throwable cause) {
-                                MqttConnection.setClient(null);
-                                //Toast.makeText(getActivity().getApplicationContext(), "Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
-                                Log.i("MyApp", "Это мое сообщение о заходе в connectionLost");
-                                //ChangeVisualInterface();
-                                //MessagesArray.setAdapter(null);
-                                //MessagesArray.setMessages(null);
-                            }
-
-                            @Override
-                            public void messageArrived(String topic, MqttMessage message) throws Exception {
-                                byte[] encodedPayload = message.getPayload();
-                                String mes = new String(encodedPayload);
-                                MessagesArray.addMessage(topic + ": " + mes);
-                                MessagesArray.getAdapter().notifyDataSetChanged();
-                                Toast.makeText(getActivity().getApplicationContext(), mes, Toast.LENGTH_LONG).show();
-                            }
-
-                            @Override
-                            public void deliveryComplete(IMqttDeliveryToken token) {
-                                //Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                    } else if (MqttConnection.getClient().isConnected()) {
-                        MqttConnection.disconnect();
-                    }
+        buttonConnect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ipAdd = editTextIpAdd.getText().toString();
+                mqttPort = editTextPortMQTT.getText().toString();
+                if (MqttConnection.getClient() == null) {
+                    boolean status = MqttConnection.connect(ipAdd, mqttPort, getActivity().getApplicationContext(), fragment);
+                } else if (MqttConnection.getClient().isConnected()) {
+                    MqttConnection.disconnect();
                 }
-            });
+            }
+        });
 
         buttonSendTest.setOnClickListener(new View.OnClickListener() {
             @Override
