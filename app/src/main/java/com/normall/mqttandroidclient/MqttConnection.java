@@ -3,6 +3,7 @@ package com.normall.mqttandroidclient;
 import android.app.Fragment;
 import android.content.Context;
 import android.util.Log;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
@@ -69,6 +70,7 @@ public class MqttConnection {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     MessagesArray.setMessages(new ArrayList<String>());
+                    MessagesArray.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     MqttConnection.subscribe();

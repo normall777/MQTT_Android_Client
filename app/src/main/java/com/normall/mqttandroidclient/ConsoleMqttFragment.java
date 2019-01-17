@@ -13,10 +13,7 @@ import android.widget.ListView;
 public class ConsoleMqttFragment extends Fragment {
 
     public ListView listViewConsole;
-    private void ReloadList(){
-        MessagesArray.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
-        listViewConsole.setAdapter(MessagesArray.getAdapter());
-    }
+
 
 
     @Override
@@ -26,7 +23,7 @@ public class ConsoleMqttFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_console_mqtt, null);
         listViewConsole = (ListView) v.findViewById(R.id.lv_console);
-        ReloadList();
+        listViewConsole.setAdapter(MessagesArray.getAdapter());
         Log.i("MyApp", "onCreateView");
 
 

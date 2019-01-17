@@ -1,12 +1,13 @@
 package com.normall.mqttandroidclient;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
 
 public class MessagesArray {
-    private static ArrayList<String> messages;
+    private static ArrayList<String> messages = new ArrayList<>();
     private static ArrayAdapter<String> adapter;
 
     public static void setAdapter(ArrayAdapter<String> arrayAdapter) {
