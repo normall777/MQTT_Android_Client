@@ -9,27 +9,34 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import org.eclipse.paho.android.service.MqttAndroidClient;
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 
 public class ConsoleMqttFragment extends Fragment {
 
+    private ListView listViewConsole;
+    private void ReloadList(){
+        MessagesArray.setAdapter(getActivity());
+        listViewConsole.setAdapter(MessagesArray.getAdapter());
+    }
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_console_mqtt, null);
-        String[] catNamesArray = new String[] { "Рыжик", "Барсик", "Мурзик",
-                "Мурка", "Васька", "Томасина", "Бобик", "Кристина", "Пушок",
-                "Дымка", "Кузя", "Китти", "Барбос", "Масяня", "Симба" };
-        ListView listViewConsole = (ListView) v.findViewById(R.id.lv_console);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, catNamesArray);
-        listViewConsole.setAdapter(adapter);
+        listViewConsole = (ListView) v.findViewById(R.id.lv_console);
+        ReloadList();
 
-
-        //MqttConnection.getClient().
 
         return v;
     }
+
+
 
 
 }

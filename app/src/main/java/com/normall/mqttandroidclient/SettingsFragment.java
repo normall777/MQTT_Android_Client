@@ -69,12 +69,16 @@ public class SettingsFragment extends Fragment {
 
                         @Override
                         public void messageArrived(String topic, MqttMessage message) throws Exception {
-                            Toast.makeText(getActivity().getApplicationContext(),"ОООООО, СМСКА ПРИШЛА, ПРИКИИИНЬ?!", Toast.LENGTH_LONG).show();
+                            byte[] encodedPayload = message.getPayload();
+                            String mes = new String(encodedPayload);
+                            MessagesArray.addMessage(topic+": "+mes);
+                            MessagesArray.getAdapter().notifyDataSetChanged();
+                            Toast.makeText(getActivity().getApplicationContext(),mes, Toast.LENGTH_LONG).show();
                         }
 
                         @Override
                         public void deliveryComplete(IMqttDeliveryToken token) {
-                            Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity().getApplicationContext(),"Мур, доставка завершена вроде как, это кайф!", Toast.LENGTH_LONG).show();
                         }
                     });
 
