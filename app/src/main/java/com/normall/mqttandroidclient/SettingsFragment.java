@@ -53,6 +53,7 @@ public class SettingsFragment extends Fragment {
                 mqttPort = editTextPortMQTT.getText().toString();
                 if (MqttConnection.getClient() == null) {
                     ((MainActivity) getActivity()).Connect(ipAdd, mqttPort, workMode);
+                    setFieldsEnabled(false);
                 } else if (MqttConnection.getClient().isConnected()) {
                     ((MainActivity) getActivity()).Disconnect();
                 }
@@ -82,20 +83,23 @@ public class SettingsFragment extends Fragment {
         return v;
     }
 
+
+    public void setFieldsEnabled(boolean status){
+        editTextIpAdd.setEnabled(status);
+        editTextPortMQTT.setEnabled(status);
+        switchWorkMode.setEnabled(status);
+    }
+
     public void ChangeVisualInterface() {
         if (MqttConnection.getClient() == null){
             buttonConnect.setText(getText(R.string.btn_text_connect));
             buttonSendTest.setVisibility(View.INVISIBLE);
-            editTextIpAdd.setEnabled(true);
-            editTextPortMQTT.setEnabled(true);
-            switchWorkMode.setEnabled(true);
+            setFieldsEnabled(true);
 
         } else if (MqttConnection.getClient().isConnected()){
             buttonConnect.setText(getText(R.string.btn_text_disconnect));
             buttonSendTest.setVisibility(View.VISIBLE);
-            editTextIpAdd.setEnabled(false);
-            editTextPortMQTT.setEnabled(false);
-            switchWorkMode.setEnabled(false);
+            setFieldsEnabled(false);
         }
     }
 

@@ -106,7 +106,7 @@ public class MqttConnection {
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(context,"Подключение выполнить не удалось", Toast.LENGTH_SHORT).show();
                     MqttConnection.setClient(null);
-                    activity.setingsFragment.ChangeVisualInterface();
+                    activity.ChangeVisualInterface();
                 }
             });
             return true;

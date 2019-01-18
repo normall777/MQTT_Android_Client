@@ -83,14 +83,14 @@ public class MainActivity extends FragmentActivity {
                     case StringCommands.COMMAND_LIGHT_ON:
                         Torch.turnOnFlash();
                         MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),StringCommands.RESPONSE_LIGHT_ON_OK);
-                        return;
+                        break;
                     case StringCommands.COMMAND_LIGHT_OFF:
                         Torch.turnOffFlash();
                         MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),StringCommands.RESPONSE_LIGHT_OFF_OK);
-                        return;
+                        break;
                     case StringCommands.COMMAND_NOTIFICATION:
                         MyNotification.showNotification();
-                        return;
+                        break;
                     case StringCommands.COMMAND_DIAL:
                         MyDial.StartDial(this);
                 }
@@ -100,10 +100,10 @@ public class MainActivity extends FragmentActivity {
                 switch (message) {
                     case StringCommands.RESPONSE_LIGHT_ON_OK:
                         controlFragment.SetButtonLightOn(true);
-                        return;
+                        break;
                     case StringCommands.RESPONSE_LIGHT_OFF_OK:
                         controlFragment.SetButtonLightOn(false);
-                        return;
+                        break;
                 }
             }
         }
