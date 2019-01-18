@@ -58,8 +58,9 @@ public class MqttConnection {
     }
 
 
-    public static boolean connect(String ipAdd, String mqttPort, final Context context, final MainActivity activity) {
+    public static boolean connect(final MainActivity activity, String ipAdd, String mqttPort, final boolean workMode) {
         final String clientId = MqttClient.generateClientId();
+        final Context context = activity.getApplicationContext();
         String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
         MqttConnection.setClient(new MqttAndroidClient(context, //this.getActivity().getApplicationContext()
                 serverURL, clientId));
@@ -72,8 +73,9 @@ public class MqttConnection {
                     MessagesArray.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
-                    MqttConnection.subscribe();
-                    activity.setingsFragment.ChangeVisualInterface();
+                    if (workMode) MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands));
+                    else MqttConnection.subscribe("#");
+                    activity.ChangeVisualInterface();
                     MqttConnection.getClient().setCallback(new MqttCallback() {
                         @Override
                         public void connectionLost(Throwable cause) {
@@ -117,8 +119,7 @@ public class MqttConnection {
     }
 
 
-    public static boolean subscribe(){
-        String topic = "#";
+    public static boolean subscribe(String topic){
         try {
             if (!MqttConnection.getClient().isConnected()) return false;
             IMqttToken subToken = MqttConnection.getClient().subscribe(topic,0);

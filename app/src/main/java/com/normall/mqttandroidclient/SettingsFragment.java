@@ -52,7 +52,7 @@ public class SettingsFragment extends Fragment {
                 ipAdd = editTextIpAdd.getText().toString();
                 mqttPort = editTextPortMQTT.getText().toString();
                 if (MqttConnection.getClient() == null) {
-                    ((MainActivity) getActivity()).Connect(ipAdd, mqttPort);
+                    ((MainActivity) getActivity()).Connect(ipAdd, mqttPort, workMode);
                 } else if (MqttConnection.getClient().isConnected()) {
                     ((MainActivity) getActivity()).Disconnect();
                 }

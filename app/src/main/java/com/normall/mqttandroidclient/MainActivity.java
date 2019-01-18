@@ -1,7 +1,6 @@
 package com.normall.mqttandroidclient;
 
 import android.app.Fragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -17,6 +16,11 @@ public class MainActivity extends FragmentActivity {
     public SettingsFragment setingsFragment = new SettingsFragment();
     public ConsoleMqttFragment consoleMqttFragment = new ConsoleMqttFragment();
     public ControlFragment controlFragment = new ControlFragment();
+
+    private static final String COMMAND_LIGHT_ON = "lightOn";
+    private static final String COMMAND_LIGHT_OFF = "lightOff";
+    private static final String RESPONSE_LIGHT_ON_OK = "LIGHT_ON_OK";
+    private static final String RESPONSE_LIGHT_OFF_OK = "LIGHT_OFF_OK";
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -49,6 +53,7 @@ public class MainActivity extends FragmentActivity {
         if (setingsFragment.isVisible()){
             setingsFragment.ChangeVisualInterface();
         }
+        findViewById(R.id.navigation_control).setEnabled(!setingsFragment.getWorkMode());
     }
 
 
@@ -74,25 +79,25 @@ public class MainActivity extends FragmentActivity {
 
     public void readMessage(String topic, String message){
         if (setingsFragment.getWorkMode()){
-            if (topic.equals("phones/slave/execute")){
+            if (topic.equals(getString(R.string.topic_slave_commands))){
                 switch (message){
-                    case "lightOn":
+                    case COMMAND_LIGHT_ON:
                         Torch.turnOnFlash();
-                        MqttConnection.sendMQTTMessage("phones/slave/result","LIGHT_ON_OK");
+                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),RESPONSE_LIGHT_ON_OK);
                         return;
-                    case "lightOff":
+                    case COMMAND_LIGHT_OFF:
                         Torch.turnOffFlash();
-                        MqttConnection.sendMQTTMessage("phones/slave/result","LIGHT_OFF_OK");
+                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),RESPONSE_LIGHT_OFF_OK);
                         return;
                 }
             }
         } else {
-            if (topic.equals("phones/slave/result")) {
+            if (topic.equals(getString(R.string.topic_slave_response))) {
                 switch (message) {
-                    case "LIGHT_ON_OK":
+                    case RESPONSE_LIGHT_ON_OK:
                         controlFragment.SetButtonLightOn(true);
                         return;
-                    case "LIGHT_OFF_OK":
+                    case RESPONSE_LIGHT_OFF_OK:
                         controlFragment.SetButtonLightOn(false);
                         return;
                 }
@@ -102,9 +107,9 @@ public class MainActivity extends FragmentActivity {
 
 
 
-    public void Connect(String ipAdd, String mqttPort){
+    public void Connect(String ipAdd, String mqttPort, boolean workMode){
         if (MqttConnection.getClient()==null){
-            MqttConnection.connect(ipAdd, mqttPort, getApplicationContext(), this);
+            MqttConnection.connect(this, ipAdd, mqttPort, workMode);
         }
     }
 
