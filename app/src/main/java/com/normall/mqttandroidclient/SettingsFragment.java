@@ -77,6 +77,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        ((MainActivity) getActivity()).ChangeVisualInterface();
 
         return v;
     }

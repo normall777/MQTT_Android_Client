@@ -11,9 +11,9 @@ public class ControlFragment extends Fragment {
 
     private Button buttonLight;
     private Button buttonNotification;
+    private Button buttonDial;
     private boolean lightOn = false;
-    private String lightMessage = "lightOn";
-
+    private String lightMessage = StringCommands.COMMAND_LIGHT_ON;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -23,7 +23,7 @@ public class ControlFragment extends Fragment {
         buttonLight = (Button) v.findViewById(R.id.button_light);
         SetButtonLightOn(lightOn);
         buttonNotification = (Button) v.findViewById(R.id.button_notification);
-
+        buttonDial = (Button) v.findViewById(R.id.button_dial);
 
         buttonLight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +36,14 @@ public class ControlFragment extends Fragment {
         buttonNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MqttConnection.sendMQTTMessage("phones/slave/execute", MyNotification.getNotificationCommandMessage());
+                MqttConnection.sendMQTTMessage("phones/slave/execute", StringCommands.COMMAND_NOTIFICATION);
+            }
+        });
+
+        buttonDial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MqttConnection.sendMQTTMessage("phones/slave/execute", StringCommands.COMMAND_DIAL);
             }
         });
 
@@ -49,12 +56,12 @@ public class ControlFragment extends Fragment {
 
         if (lightOn){
             buttonLight.setText(R.string.btn_text_off_light);
-            lightMessage = "lightOff";
+            lightMessage = StringCommands.COMMAND_LIGHT_OFF;
         }
 
         else {
             buttonLight.setText(R.string.btn_text_on_light);
-            lightMessage = "lightOn";
+            lightMessage = StringCommands.COMMAND_LIGHT_ON;
         }
 
     }

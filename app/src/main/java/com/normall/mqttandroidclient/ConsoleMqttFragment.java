@@ -23,6 +23,7 @@ public class ConsoleMqttFragment extends Fragment {
         listViewConsole = (ListView) v.findViewById(R.id.lv_console);
         listViewConsole.setAdapter(MessagesArray.getAdapter());
         Log.i("MyApp", "onCreateView");
+        ((MainActivity) getActivity()).ChangeVisualInterface();
         return v;
     }
 }

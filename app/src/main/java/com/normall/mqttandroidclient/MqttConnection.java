@@ -41,7 +41,7 @@ public class MqttConnection {
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("MyApp", "Это мое сообщение о заходе в disconnect");
                     MqttConnection.setClient(null);
-                    activity.setingsFragment.ChangeVisualInterface();
+                    activity.ChangeVisualInterface();
                 }
 
                 @Override
@@ -100,8 +100,6 @@ public class MqttConnection {
 
                         }
                     });
-
-
                 }
 
                 @Override

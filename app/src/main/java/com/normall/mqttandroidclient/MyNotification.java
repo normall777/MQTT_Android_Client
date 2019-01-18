@@ -10,11 +10,7 @@ public class MyNotification {
     private static NotificationCompat.Builder builder;
     private static Notification notification;
     private static NotificationManager notificationManager;
-    private static String notificationCommandMessage = "notification";
 
-    public static String getNotificationCommandMessage() {
-        return notificationCommandMessage;
-    }
 
     public static void showNotification(){
         notificationManager.notify(1,notification);

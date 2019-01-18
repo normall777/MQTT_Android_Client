@@ -16,13 +16,7 @@ public class MainActivity extends FragmentActivity {
     public SettingsFragment setingsFragment = new SettingsFragment();
     public ConsoleMqttFragment consoleMqttFragment = new ConsoleMqttFragment();
     public ControlFragment controlFragment = new ControlFragment();
-
-    public static final String COMMAND_LIGHT_ON = "lightOn";
-    public static final String COMMAND_LIGHT_OFF = "lightOff";
-    private static final String COMMAND_NOTIFICATION = "notification";
-    private static final String RESPONSE_LIGHT_ON_OK = "LIGHT_ON_OK";
-    private static final String RESPONSE_LIGHT_OFF_OK = "LIGHT_OFF_OK";
-
+    public static boolean workModeOfDivice=false;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -54,7 +48,8 @@ public class MainActivity extends FragmentActivity {
         if (setingsFragment.isVisible()){
             setingsFragment.ChangeVisualInterface();
         }
-        findViewById(R.id.navigation_control).setEnabled(!setingsFragment.getWorkMode());
+        findViewById(R.id.navigation_control).setEnabled(!workModeOfDivice);
+
     }
 
 
@@ -73,9 +68,11 @@ public class MainActivity extends FragmentActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        findViewById(R.id.navigation_control).setEnabled(!workModeOfDivice);
         //Фонарик
         Torch.Initialize(this);
         MyNotification.Initialize(this);
+        MyDial.Initialize();
     }
 
 
@@ -83,25 +80,28 @@ public class MainActivity extends FragmentActivity {
         if (setingsFragment.getWorkMode()){
             if (topic.equals(getString(R.string.topic_slave_commands))){
                 switch (message){
-                    case COMMAND_LIGHT_ON:
+                    case StringCommands.COMMAND_LIGHT_ON:
                         Torch.turnOnFlash();
-                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),RESPONSE_LIGHT_ON_OK);
+                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),StringCommands.RESPONSE_LIGHT_ON_OK);
                         return;
-                    case COMMAND_LIGHT_OFF:
+                    case StringCommands.COMMAND_LIGHT_OFF:
                         Torch.turnOffFlash();
-                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),RESPONSE_LIGHT_OFF_OK);
+                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),StringCommands.RESPONSE_LIGHT_OFF_OK);
                         return;
-                    case COMMAND_NOTIFICATION:
+                    case StringCommands.COMMAND_NOTIFICATION:
                         MyNotification.showNotification();
+                        return;
+                    case StringCommands.COMMAND_DIAL:
+                        MyDial.StartDial(this);
                 }
             }
         } else {
             if (topic.equals(getString(R.string.topic_slave_response))) {
                 switch (message) {
-                    case RESPONSE_LIGHT_ON_OK:
+                    case StringCommands.RESPONSE_LIGHT_ON_OK:
                         controlFragment.SetButtonLightOn(true);
                         return;
-                    case RESPONSE_LIGHT_OFF_OK:
+                    case StringCommands.RESPONSE_LIGHT_OFF_OK:
                         controlFragment.SetButtonLightOn(false);
                         return;
                 }
@@ -114,6 +114,7 @@ public class MainActivity extends FragmentActivity {
     public void Connect(String ipAdd, String mqttPort, boolean workMode){
         if (MqttConnection.getClient()==null){
             MqttConnection.connect(this, ipAdd, mqttPort, workMode);
+            workModeOfDivice = workMode;
         }
     }
 

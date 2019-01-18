@@ -17,4 +17,5 @@
     <string name="btn_text_off_light">Выключить фонарик</string>
     <string name="notification_text">Привет с другого телефона!</string>
     <string name="btn_text_notification">Отправить уведомление</string>
+    <string name="btn_text_dial">Отправить команду вызова</string>
 </resources>
