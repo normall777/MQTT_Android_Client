@@ -17,8 +17,9 @@ public class MainActivity extends FragmentActivity {
     public ConsoleMqttFragment consoleMqttFragment = new ConsoleMqttFragment();
     public ControlFragment controlFragment = new ControlFragment();
 
-    private static final String COMMAND_LIGHT_ON = "lightOn";
-    private static final String COMMAND_LIGHT_OFF = "lightOff";
+    public static final String COMMAND_LIGHT_ON = "lightOn";
+    public static final String COMMAND_LIGHT_OFF = "lightOff";
+    private static final String COMMAND_NOTIFICATION = "notification";
     private static final String RESPONSE_LIGHT_ON_OK = "LIGHT_ON_OK";
     private static final String RESPONSE_LIGHT_OFF_OK = "LIGHT_OFF_OK";
 
@@ -74,6 +75,7 @@ public class MainActivity extends FragmentActivity {
 
         //Фонарик
         Torch.Initialize(this);
+        MyNotification.Initialize(this);
     }
 
 
@@ -89,6 +91,8 @@ public class MainActivity extends FragmentActivity {
                         Torch.turnOffFlash();
                         MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),RESPONSE_LIGHT_OFF_OK);
                         return;
+                    case COMMAND_NOTIFICATION:
+                        MyNotification.showNotification();
                 }
             }
         } else {

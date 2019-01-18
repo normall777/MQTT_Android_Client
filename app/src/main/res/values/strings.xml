@@ -15,4 +15,6 @@
     <string name="switch_text_work_mode">Режим исполнителя команд</string>
     <string name="btn_text_on_light">Включить фонарик</string>
     <string name="btn_text_off_light">Выключить фонарик</string>
+    <string name="notification_text">Привет с другого телефона!</string>
+    <string name="btn_text_notification">Отправить уведомление</string>
 </resources>
