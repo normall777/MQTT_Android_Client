@@ -49,6 +49,12 @@ public class MainActivity extends FragmentActivity {
             setingsFragment.ChangeVisualInterface();
         }
         findViewById(R.id.navigation_control).setEnabled(!workModeOfDivice);
+        if (MqttConnection.getClient()==null){
+            findViewById(R.id.navigation_console).setEnabled(false);
+            findViewById(R.id.navigation_control).setEnabled(false);
+        } else {
+            findViewById(R.id.navigation_console).setEnabled(true);
+        }
 
     }
 
@@ -68,6 +74,7 @@ public class MainActivity extends FragmentActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+        ChangeVisualInterface();
         findViewById(R.id.navigation_control).setEnabled(!workModeOfDivice);
         //Фонарик
         Torch.Initialize(this);

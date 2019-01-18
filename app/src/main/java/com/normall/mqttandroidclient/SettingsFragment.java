@@ -88,6 +88,7 @@ public class SettingsFragment extends Fragment {
         editTextIpAdd.setEnabled(status);
         editTextPortMQTT.setEnabled(status);
         switchWorkMode.setEnabled(status);
+
     }
 
     public void ChangeVisualInterface() {

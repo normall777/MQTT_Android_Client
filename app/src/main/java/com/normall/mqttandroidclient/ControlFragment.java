@@ -46,7 +46,7 @@ public class ControlFragment extends Fragment {
                 MqttConnection.sendMQTTMessage("phones/slave/execute", StringCommands.COMMAND_DIAL);
             }
         });
-
+        ((MainActivity) getActivity()).ChangeVisualInterface();
 
         return v;
     }
