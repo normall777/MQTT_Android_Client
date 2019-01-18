@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="topic_slave_commands">phones/slave/execute</string>
+    <string name="topic_slave_commands_torch">phones/slave/execute/torch</string>
+    <string name="topic_slave_commands_notify">phones/slave/execute/notification</string>
+    <string name="topic_slave_commands_phone">phones/slave/execute/phone</string>
     <string name="topic_slave_response">phones/slave/result</string>
 </resources>

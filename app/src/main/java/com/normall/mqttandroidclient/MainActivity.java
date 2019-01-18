@@ -78,29 +78,26 @@ public class MainActivity extends FragmentActivity {
         findViewById(R.id.navigation_control).setEnabled(!workModeOfDivice);
         //Фонарик
         Torch.Initialize(this);
-        MyNotification.Initialize(this);
-        MyDial.Initialize();
     }
 
 
     public void readMessage(String topic, String message){
         if (setingsFragment.getWorkMode()){
-            if (topic.equals(getString(R.string.topic_slave_commands))){
-                switch (message){
+            if (topic.equals(getString(R.string.topic_slave_commands_torch))) {
+                switch (message) {
                     case StringCommands.COMMAND_LIGHT_ON:
                         Torch.turnOnFlash();
-                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),StringCommands.RESPONSE_LIGHT_ON_OK);
+                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response), StringCommands.RESPONSE_LIGHT_ON_OK);
                         break;
                     case StringCommands.COMMAND_LIGHT_OFF:
                         Torch.turnOffFlash();
-                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response),StringCommands.RESPONSE_LIGHT_OFF_OK);
+                        MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_response), StringCommands.RESPONSE_LIGHT_OFF_OK);
                         break;
-                    case StringCommands.COMMAND_NOTIFICATION:
-                        MyNotification.showNotification();
-                        break;
-                    case StringCommands.COMMAND_DIAL:
-                        MyDial.StartDial(this);
                 }
+            } else if (topic.equals(getString(R.string.topic_slave_commands_notify))) {
+                MyNotification.showNotification(this, message);
+            } else if (topic.equals(getString(R.string.topic_slave_commands_phone))) {
+                MyDial.StartDial(this, message);
             }
         } else {
             if (topic.equals(getString(R.string.topic_slave_response))) {

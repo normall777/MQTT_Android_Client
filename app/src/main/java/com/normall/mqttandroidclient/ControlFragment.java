@@ -6,12 +6,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class ControlFragment extends Fragment {
 
     private Button buttonLight;
     private Button buttonNotification;
     private Button buttonDial;
+    private EditText editTextMessage;
+    private EditText editTextPhoneNumber;
     private boolean lightOn = false;
     private String lightMessage = StringCommands.COMMAND_LIGHT_ON;
 
@@ -24,11 +27,13 @@ public class ControlFragment extends Fragment {
         SetButtonLightOn(lightOn);
         buttonNotification = (Button) v.findViewById(R.id.button_notification);
         buttonDial = (Button) v.findViewById(R.id.button_dial);
+        editTextMessage = (EditText) v.findViewById(R.id.editTextMessageForNotifi);
+        editTextPhoneNumber = (EditText) v.findViewById(R.id.editTextPhoneNumber);
 
         buttonLight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MqttConnection.sendMQTTMessage("phones/slave/execute", lightMessage);
+                MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_commands_torch), lightMessage);
                 //MqttConnection.sendMQTTMessage("control","lightOn");
             }
         });
@@ -36,14 +41,14 @@ public class ControlFragment extends Fragment {
         buttonNotification.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MqttConnection.sendMQTTMessage("phones/slave/execute", StringCommands.COMMAND_NOTIFICATION);
+                MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_commands_notify), editTextMessage.getText().toString());
             }
         });
 
         buttonDial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MqttConnection.sendMQTTMessage("phones/slave/execute", StringCommands.COMMAND_DIAL);
+                MqttConnection.sendMQTTMessage(getString(R.string.topic_slave_commands_phone), editTextPhoneNumber.getText().toString());
             }
         });
         ((MainActivity) getActivity()).ChangeVisualInterface();

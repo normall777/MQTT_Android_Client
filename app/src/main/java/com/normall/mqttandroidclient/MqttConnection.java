@@ -73,7 +73,11 @@ public class MqttConnection {
                     MessagesArray.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
                     MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
-                    if (workMode) MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands));
+                    if (workMode) {
+                        MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands_torch));
+                        MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands_notify));
+                        MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands_phone));
+                    }
                     else MqttConnection.subscribe("#");
                     activity.ChangeVisualInterface();
                     MqttConnection.getClient().setCallback(new MqttCallback() {

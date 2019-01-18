@@ -18,4 +18,8 @@
     <string name="notification_text">Привет с другого телефона!</string>
     <string name="btn_text_notification">Отправить уведомление</string>
     <string name="btn_text_dial">Отправить команду вызова</string>
+    <string name="edit_text_hint_message">Введи сообщение для уведомления</string>
+    <string name="edit_text_message_default">Message</string>
+    <string name="edit_text_hing_phone_number">Введи номер для звонка</string>
+    <string name="edit_text_phone_number_default">+7</string>
 </resources>

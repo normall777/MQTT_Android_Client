@@ -18,11 +18,37 @@
             android:layout_height="wrap_content"
             android:text="@string/btn_text_on_light" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <EditText
+            android:id="@+id/editTextMessageForNotifi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/edit_text_hint_message"
+            android:inputType="textPersonName"
+            android:text="@string/edit_text_message_default" />
+
         <Button
             android:id="@+id/button_notification"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_text_notification" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <EditText
+            android:id="@+id/editTextPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/edit_text_hing_phone_number"
+            android:inputType="phone"
+            android:text="@string/edit_text_phone_number_default" />
 
         <Button
             android:id="@+id/button_dial"
