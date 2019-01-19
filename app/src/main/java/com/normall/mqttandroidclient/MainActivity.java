@@ -113,8 +113,6 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-
-
     public void Connect(String ipAdd, String mqttPort, boolean workMode){
         if (MqttConnection.getClient()==null){
             MqttConnection.connect(this, ipAdd, mqttPort, workMode);
@@ -128,17 +126,4 @@ public class MainActivity extends FragmentActivity {
         }
 
     }
-
-    /*@Override
-    protected void onDestroy() {
-        if (MqttConnection.isConnected()){
-            try {
-                MqttConnection.getClient().disconnect();
-            } catch (MqttException e) {
-                e.printStackTrace();
-            }
-        }
-        super.onDestroy();
-
-    }*/
 }

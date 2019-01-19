@@ -35,18 +35,18 @@ public class MqttConnection {
 
     public static boolean disconnect(final MainActivity activity) {
         try{
-            IMqttToken disconToken = MqttConnection.getClient().disconnect();
+            IMqttToken disconToken = client.disconnect();
             disconToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     Log.i("MyApp", "Это мое сообщение о заходе в disconnect");
-                    MqttConnection.setClient(null);
+                    setClient(null);
                     activity.ChangeVisualInterface();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    MqttConnection.setClient(null);
+                    setClient(null);
                 }
             });
             return true;
@@ -54,7 +54,6 @@ public class MqttConnection {
             e.printStackTrace();
             return false;
         }
-
     }
 
 
@@ -62,28 +61,28 @@ public class MqttConnection {
         final String clientId = MqttClient.generateClientId();
         final Context context = activity.getApplicationContext();
         String serverURL = "tcp://" + ipAdd + ":" + mqttPort;
-        MqttConnection.setClient(new MqttAndroidClient(context, //this.getActivity().getApplicationContext()
+        setClient(new MqttAndroidClient(context, //this.getActivity().getApplicationContext()
                 serverURL, clientId));
         try {
-            IMqttToken token = MqttConnection.getClient().connect();
+            IMqttToken token = client.connect();
             token.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     MessagesArray.setMessages(new ArrayList<String>());
                     MessagesArray.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, MessagesArray.getMessages()));
-                    MqttConnection.sendMQTTMessage("test","Hello, I am "+clientId);
+                    sendMQTTMessage("test","Hello, I am "+clientId);
                     Toast.makeText(context,"Успешно! Тебя зовут\n"+clientId, Toast.LENGTH_SHORT).show();
                     if (workMode) {
-                        MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands_torch));
-                        MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands_notify));
-                        MqttConnection.subscribe(activity.getString(R.string.topic_slave_commands_phone));
+                        subscribe(activity.getString(R.string.topic_slave_commands_torch));
+                        subscribe(activity.getString(R.string.topic_slave_commands_notify));
+                        subscribe(activity.getString(R.string.topic_slave_commands_phone));
                     }
-                    else MqttConnection.subscribe("#");
+                    else subscribe("#");
                     activity.ChangeVisualInterface();
-                    MqttConnection.getClient().setCallback(new MqttCallback() {
+                    client.setCallback(new MqttCallback() {
                         @Override
                         public void connectionLost(Throwable cause) {
-                            MqttConnection.setClient(null);
+                            setClient(null);
                             Toast.makeText(context.getApplicationContext(), "Sorry, the connection is lost! :c", Toast.LENGTH_LONG).show();
                             Log.i("MyApp", "Это мое сообщение о заходе в connectionLost");
                             activity.ChangeVisualInterface();
@@ -109,7 +108,7 @@ public class MqttConnection {
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     Toast.makeText(context,"Подключение выполнить не удалось", Toast.LENGTH_SHORT).show();
-                    MqttConnection.setClient(null);
+                    setClient(null);
                     activity.ChangeVisualInterface();
                 }
             });
@@ -123,8 +122,8 @@ public class MqttConnection {
 
     public static boolean subscribe(String topic){
         try {
-            if (!MqttConnection.getClient().isConnected()) return false;
-            IMqttToken subToken = MqttConnection.getClient().subscribe(topic,0);
+            if (!client.isConnected()) return false;
+            IMqttToken subToken = client.subscribe(topic,0);
             subToken.setActionCallback(new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -144,7 +143,7 @@ public class MqttConnection {
 
 
     public static boolean sendMQTTMessage(String topic, String message) {
-        if (MqttConnection.getClient()==null){
+        if (client==null){
             return false;
         }
 
@@ -152,7 +151,7 @@ public class MqttConnection {
         try{
             encodedPayload = message.getBytes("UTF-8");
             MqttMessage mqttMessage = new MqttMessage(encodedPayload);
-            MqttConnection.getClient().publish(topic,mqttMessage);
+            client.publish(topic,mqttMessage);
             return true;
         }catch (UnsupportedEncodingException | MqttException e){
             e.printStackTrace();

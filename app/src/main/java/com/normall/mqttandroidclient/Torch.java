@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.util.Log;
-import android.widget.Button;
 import android.widget.Toast;
 
 public class Torch {

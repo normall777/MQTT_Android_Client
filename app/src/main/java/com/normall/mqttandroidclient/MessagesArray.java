@@ -1,7 +1,5 @@
 package com.normall.mqttandroidclient;
 
-import android.app.Activity;
-import android.content.Context;
 import android.widget.ArrayAdapter;
 
 import java.util.ArrayList;
